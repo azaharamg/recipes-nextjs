@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
@@ -6,6 +6,8 @@ import { css } from '@emotion/core';
 import SearchBox from '../ui/SearchBox';
 import { Button } from '../ui/Button';
 import NavBar from './NavBar';
+
+import { FirebaseContext } from '../../firebase';
 
 const HeaderContainer = styled.div`
   max-width: 1200px;
@@ -28,8 +30,15 @@ const Logo = styled.p`
   }
 `;
 
+const Avatar = styled.p`
+  margin-right: 2rem;
+  color: var(--greyDark);
+  font-family: var(--primaryFontFamily);
+  font-weight: 700;
+`;
+
 const Header = () => {
-  const user = true;
+  const { user, firebase } = useContext(FirebaseContext);
 
   return (
     <header
@@ -60,14 +69,14 @@ const Header = () => {
         >
           {user ? (
             <React.Fragment>
-              <p
-                css={css`
-                  margin-right: 2rem;
-                `}
+              <Avatar>{`Hello ${user.displayName}!!`}</Avatar>
+              <Button
+                bgColor='true'
+                type='button'
+                onClick={() => {
+                  firebase.logOut();
+                }}
               >
-                Hello!!
-              </p>
-              <Button bgColor='true' type='button'>
                 Log out
               </Button>
             </React.Fragment>
