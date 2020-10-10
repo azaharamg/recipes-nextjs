@@ -6,6 +6,7 @@ export const Button = styled.a`
   border: 1px solid #d1d1d1;
   padding: 0.8rem 2rem;
   margin-right: 1rem;
+  border-radius: 0.5rem;
   background-color: ${(props) => (props.bgColor ? '#00a896' : 'white')};
   color: ${(props) => (props.bgColor ? 'white' : '#000')};
 
@@ -26,6 +27,7 @@ export const ButtonSearch = styled.button`
   background-size: 4rem;
   background-image: url('/static/image/search.png');
   background-repeat: no-repeat;
+  border-radius: 0.5rem;
   position: absolute;
   right: 1rem;
   top: 1px;
