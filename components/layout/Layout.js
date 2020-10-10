@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 
-import GlobalTheme from './GlobalTheme';
+import GlobalTheme from '../theme/GlobalTheme';
 import Header from '../layout/Header';
 
 const Layout = (props) => {

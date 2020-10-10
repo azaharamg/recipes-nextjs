@@ -15,6 +15,12 @@ const GlobalTheme = () => {
 
           --greyDark: #6c757d;
           --greyLight: #d9d9d9;
+
+          --white: #fff;
+          --red: #ff0000;
+
+          --primaryFontFamily: 'Oxygen', sans-serif;
+          --secondaryFontFamily: 'Source Sans Pro', sans-serif;
         }
 
         html {
@@ -30,7 +36,7 @@ const GlobalTheme = () => {
         body {
           font-size: 1.6rem;
           line-height: 1.5;
-          font-family: 'Source Sans Pro', sans-serif;
+          font-family: var(--secondaryFontFamily);
         }
 
         h1,
@@ -42,12 +48,12 @@ const GlobalTheme = () => {
 
         h1,
         h2 {
-          font-family: 'Oxygen', sans-serif;
+          font-family: var(--primaryFontFamily);
           font-weight: 700;
         }
 
         h3 {
-          font-family: 'Source Sans Pro', sans-serif;
+          font-family: var(--secondaryFontFamily);
         }
 
         ul {
@@ -57,7 +63,7 @@ const GlobalTheme = () => {
         }
         a {
           text-decoration: none;
-          font-family: 'Source Sans Pro', sans-serif;
+          font-family: var(--secondaryFontFamily);
         }
       `}
     />
