@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Router from 'next/router';
 import { css } from '@emotion/core';
+
+import firebase from '../firebase';
 
 import Layout from '../components/layout/Layout';
 import { Form, Field, InputSubmit, Input, Error } from '../components/ui/Form';
@@ -7,13 +10,11 @@ import { Form, Field, InputSubmit, Input, Error } from '../components/ui/Form';
 import useValidation from '../hooks/useValidation';
 import validateCreateAccount from '../validation/validateCreateAccount';
 
-const STATE_INITIAL = {
-  name: '',
-  email: '',
-  password: '',
-};
+import { STATE_INITIAL } from '../constants/constants';
 
 const CreateAccount = () => {
+  const [createAccountError, storeError] = useState(false);
+
   const { values, errors, handleSubmit, handleChange, handleBlur } = useValidation(
     STATE_INITIAL,
     validateCreateAccount,
@@ -22,8 +23,14 @@ const CreateAccount = () => {
 
   const { name, email, password } = values;
 
-  function createAccount() {
-    console.log('Creating account...');
+  async function createAccount() {
+    try {
+      await firebase.register(name, email, password);
+      Router.push('/');
+    } catch (error) {
+      console.log('Error, when user tries to create a new account', error.message);
+      storeError(error.message);
+    }
   }
 
   return (
@@ -79,6 +86,17 @@ const CreateAccount = () => {
               />
               {errors.password && <Error>{errors.password}*</Error>}
             </Field>
+
+            {createAccountError && (
+              <Error
+                css={css`
+                  text-align: center;
+                `}
+              >
+                {`Sorry, ${createAccountError}`}
+              </Error>
+            )}
+
             <InputSubmit type='submit' value='Create' />
           </Form>
         </React.Fragment>
