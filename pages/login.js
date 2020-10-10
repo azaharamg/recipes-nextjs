@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '../components/layout/Layout';
 
-export default function Login() {
+const Login = () => {
   return (
     <div>
       <Layout>
@@ -9,4 +9,6 @@ export default function Login() {
       </Layout>
     </div>
   );
-}
+};
+
+export default Login;

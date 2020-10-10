@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '../components/layout/Layout';
 
-export default function Popular() {
+const Popular = () => {
   return (
     <div>
       <Layout>
@@ -9,4 +9,6 @@ export default function Popular() {
       </Layout>
     </div>
   );
-}
+};
+
+export default Popular;

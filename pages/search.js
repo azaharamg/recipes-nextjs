@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '../components/layout/Layout';
 
-export default function Search() {
+const Search = () => {
   return (
     <div>
       <Layout>
@@ -9,4 +9,6 @@ export default function Search() {
       </Layout>
     </div>
   );
-}
+};
+
+export default Search;

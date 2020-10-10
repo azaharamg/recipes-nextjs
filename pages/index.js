@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '../components/layout/Layout';
 
-export default function Home() {
+const Home = () => {
   return (
     <div>
       <Layout>
@@ -9,4 +9,6 @@ export default function Home() {
       </Layout>
     </div>
   );
-}
+};
+
+export default Home;
