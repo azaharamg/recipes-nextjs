@@ -3,7 +3,19 @@ import styled from '@emotion/styled';
 export const Form = styled.form`
   max-width: 600px;
   width: 95%;
-  margin: 5rem auto 0 auto;
+  margin: 5rem auto;
+
+  fieldset {
+    margin: 5rem 0;
+    border: 1px solid var(--blueLight01);
+    font-size: 2rem;
+    padding: 2rem;
+    box-shadow: 2px 10px 5px var(--greyLight);
+  }
+
+  legend {
+    color: var(--blueLight01);
+  }
 `;
 
 export const Field = styled.div`
@@ -14,6 +26,19 @@ export const Field = styled.div`
   label {
     flex: 0 0 150px;
     font-size: 1.8rem;
+  }
+
+  textarea {
+    height: 20rem;
+    flex: 1;
+    padding: 1rem;
+    border: 1px solid var(--greyLight);
+    border-radius: 7px;
+    outline: none;
+    &:focus {
+      border-color: var(--blueDark02);
+      box-shadow: 0 0 10px var(--blueDark02);
+    }
   }
 `;
 
