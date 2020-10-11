@@ -3,3 +3,10 @@ export const STATE_INITIAL = {
   email: '',
   password: '',
 };
+
+export const STATE_INITIAL_RECIPE = {
+  name: '',
+  author: '',
+  image: '',
+  description: '',
+};
