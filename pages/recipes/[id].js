@@ -10,7 +10,7 @@ import Error404 from '../../components/layout/404';
 import Layout from '../../components/layout/Layout';
 import Spinner from '../../components/ui/Spinner';
 import { Field, Input, InputSubmit } from '../../components/ui/Form';
-import { Button } from '../../components/ui/Button';
+import { Button, DangerButton } from '../../components/ui/Button';
 
 const RecipeContainer = styled.div`
   @media (min-width: 768px) {
@@ -132,6 +132,32 @@ const Recipe = () => {
     storeDataDb(true);
   };
 
+  /**
+   * Only the creator of a recipe can delete it
+   */
+  const userAvailableDelete = () => {
+    if (!user) return false;
+
+    if (userInfo.id === user.uid) {
+      return true;
+    }
+  };
+
+  const handleDeleteRecipe = async () => {
+    if (!user) {
+      return router.push('/login');
+    }
+    if (userInfo.id !== user.uid) {
+      return router.push('/');
+    }
+    try {
+      await firebase.db.collection('recipes').doc(id).delete();
+      router.push('/');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (Object.keys(recipe).length === 0 && !error) return Spinner();
 
   return (
@@ -207,9 +233,18 @@ const Recipe = () => {
               </div>
               {user && (
                 <aside>
-                  <Button bgColor='true' onClick={handleVote}>
-                    Vote this recipe
-                  </Button>
+                  <div
+                    css={css`
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                    `}
+                  >
+                    <Button bgColor='true' onClick={handleVote}>
+                      Vote this recipe
+                    </Button>
+                    {userAvailableDelete() && <DangerButton onClick={handleDeleteRecipe}>Remove</DangerButton>}
+                  </div>
                   <p>{votes === 1 ? `${votes} Vote` : `${votes} Vote`}</p>
 
                   <h2>Add your comments</h2>
