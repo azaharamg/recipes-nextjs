@@ -8,6 +8,7 @@ import FileUploader from 'react-firebase-file-uploader';
 
 import Layout from '../components/layout/Layout';
 import { Form, Field, InputSubmit, Input, Error } from '../components/ui/Form';
+import Error404 from '../components/layout/404';
 
 import useValidation from '../hooks/useValidation';
 import validateNewRecipe from '../validation/validateNewRecipe';
@@ -46,6 +47,11 @@ const NewRecipe = () => {
       urlImage,
       comments: [],
       published: Date.now(),
+      postUser: {
+        id: user.uid,
+        name: user.displayName,
+      },
+      userHasVoted: [],
     };
 
     firebase.db.collection('recipes').add(recipe);
@@ -81,97 +87,101 @@ const NewRecipe = () => {
   return (
     <div>
       <Layout>
-        <React.Fragment>
-          <h1
-            css={css`
-              text-align: center;
-              margin-top: 5rem;
-            `}
-          >
-            Add New Recipe
-          </h1>
-          <Form onSubmit={handleSubmit} noValidate>
-            <fieldset>
-              <legend>General Information</legend>
-              <Field>
-                <label htmlFor='name'>Name</label>
-                <Input
-                  type='text'
-                  id='name'
-                  placeholder="Recipe's Name"
-                  name='name'
-                  value={name}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.name && <Error>{errors.name}*</Error>}
-              </Field>
-              <Field>
-                <label htmlFor='author'>Author</label>
-                <Input
-                  type='text'
-                  id='author'
-                  placeholder="What's your name?"
-                  name='author'
-                  value={author}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.author && <Error>{errors.author}*</Error>}
-              </Field>
-              <Field>
-                <label htmlFor='image'>Image</label>
-                <FileUploader
-                  accept='image/png, image/jpeg'
-                  id='image'
-                  name='image'
-                  randomizeFilename
-                  storageRef={firebase.storage.ref('recipes')}
-                  onUploadStart={handleUploadStart}
-                  onUploadError={handleUploadError}
-                  onUploadSuccess={handleUploadSuccess}
-                  onProgress={handleProgress}
-                />
-              </Field>
-            </fieldset>
+        {!user ? (
+          <Error404 />
+        ) : (
+          <React.Fragment>
+            <h1
+              css={css`
+                text-align: center;
+                margin-top: 5rem;
+              `}
+            >
+              Add New Recipe
+            </h1>
+            <Form onSubmit={handleSubmit} noValidate>
+              <fieldset>
+                <legend>General Information</legend>
+                <Field>
+                  <label htmlFor='name'>Name</label>
+                  <Input
+                    type='text'
+                    id='name'
+                    placeholder="Recipe's Name"
+                    name='name'
+                    value={name}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {errors.name && <Error>{errors.name}*</Error>}
+                </Field>
+                <Field>
+                  <label htmlFor='author'>Author</label>
+                  <Input
+                    type='text'
+                    id='author'
+                    placeholder="What's your name?"
+                    name='author'
+                    value={author}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {errors.author && <Error>{errors.author}*</Error>}
+                </Field>
+                <Field>
+                  <label htmlFor='image'>Image</label>
+                  <FileUploader
+                    accept='image/png, image/jpeg'
+                    id='image'
+                    name='image'
+                    randomizeFilename
+                    storageRef={firebase.storage.ref('recipes')}
+                    onUploadStart={handleUploadStart}
+                    onUploadError={handleUploadError}
+                    onUploadSuccess={handleUploadSuccess}
+                    onProgress={handleProgress}
+                  />
+                </Field>
+              </fieldset>
 
-            <fieldset>
-              <legend>
-                How to cook it! <img src='/static/image/cook.svg' width='30px' alt='pot' />
-              </legend>
-              <Field>
-                <label
-                  htmlFor='description'
+              <fieldset>
+                <legend>
+                  How to cook it! <img src='/static/image/cook.svg' width='30px' alt='pot' />
+                </legend>
+                <Field>
+                  <label
+                    htmlFor='description'
+                    css={css`
+                      align-self: flex-start;
+                    `}
+                  >
+                    Description
+                  </label>
+                  <textarea
+                    id='description'
+                    name='description'
+                    value={description}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {errors.description && <Error>{errors.description}*</Error>}
+                </Field>
+              </fieldset>
+
+              {createRecipeError && (
+                <Error
                   css={css`
-                    align-self: flex-start;
+                    text-align: center;
                   `}
                 >
-                  Description
-                </label>
-                <textarea
-                  id='description'
-                  name='description'
-                  value={description}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.description && <Error>{errors.description}*</Error>}
-              </Field>
-            </fieldset>
+                  {`Sorry, ${createRecipeError}`}
+                </Error>
+              )}
 
-            {createRecipeError && (
-              <Error
-                css={css`
-                  text-align: center;
-                `}
-              >
-                {`Sorry, ${createRecipeError}`}
-              </Error>
-            )}
-
-            <InputSubmit type='submit' value='Add' />
-          </Form>
-        </React.Fragment>
+              <InputSubmit type='submit' value='Add' />
+            </Form>
+          </React.Fragment>
+        )}
       </Layout>
     </div>
   );
