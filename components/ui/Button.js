@@ -20,6 +20,25 @@ export const Button = styled.a`
   }
 `;
 
+export const DangerButton = styled.a`
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 1px solid var(--red);
+  padding: 0.8rem 2rem;
+  margin-right: 1rem;
+  border-radius: 0.5rem;
+  background-color: ${(props) => (props.bgColor ? '#00a896' : 'white')};
+  color: ${(props) => (props.bgColor ? 'white' : '#000')};
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 export const ButtonSearch = styled.button`
   height: 3rem;
   width: 3rem;
