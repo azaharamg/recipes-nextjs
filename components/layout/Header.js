@@ -19,7 +19,7 @@ const HeaderContainer = styled.div`
   }
 `;
 
-const Logo = styled.p`
+const Logo = styled.a`
   color: var(--greenDark03);
   font-size: 4rem;
   line-height: 0;

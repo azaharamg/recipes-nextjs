@@ -22,9 +22,17 @@ const NavBar = () => {
 
   return (
     <Nav>
-      <Link href='/'>Home</Link>
-      <Link href='/popular'>Most Popular</Link>
-      {user && <Link href='/new-recipe'>New Recipe</Link>}
+      <Link href='/'>
+        <a>Home</a>
+      </Link>
+      <Link href='/popular'>
+        <a>Most Popular</a>
+      </Link>
+      {user && (
+        <Link href='/new-recipe'>
+          <a>New Recipe</a>
+        </Link>
+      )}
     </Nav>
   );
 };
