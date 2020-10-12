@@ -65,6 +65,10 @@ const GlobalTheme = () => {
           text-decoration: none;
           font-family: var(--secondaryFontFamily);
         }
+
+        img {
+          max-width: 100%;
+        }
       `}
     />
   );
