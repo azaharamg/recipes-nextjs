@@ -20,9 +20,20 @@ const RecipeContainer = styled.div`
   }
 `;
 
+const OwnerRecipe = styled.p`
+  padding: 0.5rem 2rem;
+  background-color: var(--blueLight01);
+  color: var(--white);
+  text-transform: uppercase;
+  font-weight: 700;
+  display: inline-block;
+  text-align: center;
+`;
+
 const Recipe = () => {
   const [recipe, storeRecipe] = useState({});
   const [error, storeError] = useState(false);
+  const [comment, storeComment] = useState({});
 
   /**
    * Routing to get the id of the current recipe
@@ -45,7 +56,7 @@ const Recipe = () => {
     }
   }, [id, recipe]);
 
-  const { postUser, comments, published, description, name, urlImage, author, votes, userHasVoted } = recipe;
+  const { userInfo, comments, published, description, name, urlImage, author, votes, userHasVoted } = recipe;
 
   /**
    * Manage user votes
@@ -71,6 +82,45 @@ const Recipe = () => {
 
     //Update db
     firebase.db.collection('recipes').doc(id).update({ votes: totalVotes, userHasVoted: usersHaveVoted });
+  };
+
+  /**
+   * Check if user writes a comment
+   */
+  const isUser = (id) => {
+    if (userInfo.id == id) {
+      return true;
+    }
+  };
+
+  const handleCommentChange = (e) => {
+    storeComment({
+      ...comment,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const addComment = (e) => {
+    e.preventDefault();
+
+    if (!user) {
+      return router.push('/login');
+    }
+
+    comment.userId = user.uid;
+    comment.userName = user.displayName;
+    const newComments = [...comments, comment];
+
+    //Update db
+    firebase.db.collection('recipes').doc(id).update({
+      comments: newComments,
+    });
+
+    // Update state
+    storeRecipe({
+      ...recipe,
+      comments: newComments,
+    });
   };
 
   return (
@@ -101,7 +151,7 @@ const Recipe = () => {
               {published ? (
                 <p>
                   Published {formatDistanceToNow(new Date(published), { locale: enGB })} ago
-                  {postUser ? ` por ${postUser.name}` : null}
+                  {user ? ` por ${user.displayName}` : null}
                 </p>
               ) : null}
 
@@ -113,12 +163,32 @@ const Recipe = () => {
                 Comments
               </h2>
               {comments && comments.length !== 0 ? (
-                comments.map((comment) => (
-                  <li>
-                    <p>{comment.name}</p>
-                    <p>Write by: {comment.userName}</p>
-                  </li>
-                ))
+                <ul>
+                  {comments.map((comment, i) => (
+                    <li
+                      key={`${comment.userId}-${i}`}
+                      css={css`
+                        box-shadow: 1px 1px 3px var(--greyDark);
+                        border: 1px solid var(--greyLight);
+                        padding: 2rem;
+                      `}
+                    >
+                      <p>{comment.message}</p>
+                      <p>
+                        Write by:
+                        <span
+                          css={css`
+                            text-transform: capitalize;
+                          `}
+                        >
+                          {' '}
+                          {comment.userName}
+                        </span>
+                      </p>
+                      {isUser(comment.userId) && <OwnerRecipe>Is Creator</OwnerRecipe>}
+                    </li>
+                  ))}
+                </ul>
               ) : (
                 <p>There aren't any comments.</p>
               )}
@@ -131,9 +201,9 @@ const Recipe = () => {
                 <p>{votes === 1 ? `${votes} Vote` : `${votes} Vote`}</p>
 
                 <h2>Add your comments</h2>
-                <form>
+                <form onSubmit={addComment}>
                   <Field>
-                    <Input type='text' name='message' />
+                    <Input type='text' name='message' onChange={handleCommentChange} />
                   </Field>
                   <InputSubmit type='submit' value='Add' />
                 </form>

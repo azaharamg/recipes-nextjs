@@ -47,7 +47,7 @@ const NewRecipe = () => {
       urlImage,
       comments: [],
       published: Date.now(),
-      postUser: {
+      userInfo: {
         id: user.uid,
         name: user.displayName,
       },
