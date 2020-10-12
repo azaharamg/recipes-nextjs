@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import { enGB } from 'date-fns/locale';
+import Link from 'next/link';
 
 const Recipe = styled.li`
   padding: 4rem;
@@ -12,22 +13,27 @@ const Recipe = styled.li`
 `;
 
 const DescriptionRecipe = styled.div`
-  flex: 0 1 600px;
+  flex: 0 1 70%;
   display: grid;
   grid-template-columns: 1fr 3fr;
   column-gap: 2rem;
 `;
 
-const Title = styled.h1`
+const Title = styled.a`
   font-size: 2rem;
   font-weight: bold;
   margin: 0;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const DescriptionText = styled.p`
   font-size: 1.6rem;
   margin: 0;
   color: var(--greyDark);
+  text-align: justify;
 `;
 
 const Comments = styled.div`
@@ -89,10 +95,12 @@ const RecipeDetails = ({ recipe }) => {
     <Recipe>
       <DescriptionRecipe>
         <div>
-          <Image src={urlImage} alt='' />
+          <Image src={urlImage} alt={`${name} image`} />
         </div>
         <div>
-          <Title>{name}</Title>
+          <Link href='/recipes/[id' as={`/recipes/${id}`}>
+            <Title>{name}</Title>
+          </Link>
           <DescriptionText>{description}</DescriptionText>
           <Comments>
             <div>
