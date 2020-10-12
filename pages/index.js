@@ -1,29 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { FirebaseContext } from '../firebase';
+import React from 'react';
+import useRecipes from '../hooks/useRecipes';
 import Layout from '../components/layout/Layout';
 import RecipeDetails from '../components/layout/RecipeDetails';
 
 const Home = () => {
-  const [recipes, storeRecipes] = useState([]);
-  const { firebase } = useContext(FirebaseContext);
-
-  function manageSnapshot(snapshot) {
-    const recipes = snapshot.docs.map((doc) => {
-      return {
-        id: doc.id,
-        ...doc.data(),
-      };
-    });
-    storeRecipes(recipes);
-  }
-
-  useEffect(() => {
-    const getRecipes = () => {
-      firebase.db.collection('recipes').orderBy('published', 'desc').onSnapshot(manageSnapshot);
-    };
-
-    getRecipes();
-  }, []);
+  const { recipes } = useRecipes('published');
 
   return (
     <div>
