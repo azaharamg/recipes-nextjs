@@ -194,6 +194,7 @@ const Recipe = () => {
                 ) : null}
 
                 <h2
+                  id='comments'
                   css={css`
                     margin: 2rem 0;
                   `}
@@ -213,7 +214,7 @@ const Recipe = () => {
                       >
                         <p>{comment.message}</p>
                         <p>
-                          Write by:
+                          Written by:
                           <span
                             css={css`
                               text-transform: capitalize;

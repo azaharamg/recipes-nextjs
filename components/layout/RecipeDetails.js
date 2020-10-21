@@ -36,10 +36,11 @@ const DescriptionText = styled.p`
   text-align: justify;
 `;
 
-const Comments = styled.div`
+const Comments = styled.a`
   margin-top: 2rem;
   display: flex;
   align-items: center;
+  cursor: pointer;
 
   div {
     display: flex;
@@ -74,9 +75,7 @@ const Votes = styled.div`
   border: 1px solid var(--greyLight);
   box-shadow: 0 0 3px var(--greyLight);
   padding: 1rem 3rem;
-  &:hover {
-    box-shadow: 1px 1px 5px var(--greyDark);
-  }
+  box-shadow: 1px 1px 5px var(--greyDark);
 
   div {
     font-size: 2rem;
@@ -98,16 +97,18 @@ const RecipeDetails = ({ recipe }) => {
           <Image src={urlImage} alt={`${name} image`} />
         </div>
         <div>
-          <Link href='/recipes/[id' as={`/recipes/${id}`}>
+          <Link href='/recipes/[id]' as={`/recipes/${id}`}>
             <Title>{name}</Title>
           </Link>
           <DescriptionText>{description}</DescriptionText>
-          <Comments>
-            <div>
-              <img src='/static/image/comments.png' alt='comments' />
-              <p>{comments.length === 1 ? `${comments.length} Comentario` : `${comments.length} Comentarios`}</p>
-            </div>
-          </Comments>
+          <Link href='/recipes/[id]' as={`/recipes/${id}`}>
+            <Comments>
+              <div>
+                <img src='/static/image/comments.png' alt='comments' />
+                <p>{comments.length === 1 ? `${comments.length} Comentario` : `${comments.length} Comentarios`}</p>
+              </div>
+            </Comments>
+          </Link>
           <p>Published {formatDistanceToNow(new Date(published), { locale: enGB })} ago</p>
         </div>
       </DescriptionRecipe>
