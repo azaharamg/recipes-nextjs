@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import useRecipes from '../hooks/useRecipes';
 import Layout from '../components/layout/Layout';
 import RecipeDetails from '../components/layout/RecipeDetails';
+import Error404 from '../components/layout/404';
 
 const Search = () => {
   const [result, setResult] = useState([]);
@@ -26,15 +27,19 @@ const Search = () => {
   return (
     <div>
       <Layout>
-        <div className='recipes-list'>
-          <div className='container'>
-            <ul className='bg-white'>
-              {result.map((recipe) => (
-                <RecipeDetails key={recipe.id} recipe={recipe} />
-              ))}
-            </ul>
+        {!result || result.length === 0 ? (
+          <Error404 title="Sorry, we couldn't find it" description='Try again with another search' />
+        ) : (
+          <div className='recipes-list'>
+            <div className='container'>
+              <ul className='bg-white'>
+                {result.map((recipe) => (
+                  <RecipeDetails key={recipe.id} recipe={recipe} />
+                ))}
+              </ul>
+            </div>
           </div>
-        </div>
+        )}
       </Layout>
     </div>
   );
