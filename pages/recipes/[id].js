@@ -208,7 +208,7 @@ const Recipe = () => {
                         key={`${comment.userId}-${i}`}
                         css={css`
                           box-shadow: 1px 1px 3px var(--greyDark);
-                          border: 1px solid var(--greyLight);
+                          border: 1px solid var(--greyMedium);
                           padding: 2rem;
                         `}
                       >

@@ -10,7 +10,7 @@ export const Form = styled.form`
     border: 1px solid var(--blueLight01);
     font-size: 2rem;
     padding: 2rem;
-    box-shadow: 2px 10px 5px var(--greyLight);
+    box-shadow: 2px 10px 5px var(--greyMedium);
   }
 
   legend {
@@ -32,7 +32,7 @@ export const Field = styled.div`
     height: 20rem;
     flex: 1;
     padding: 1rem;
-    border: 1px solid var(--greyLight);
+    border: 1px solid var(--greyMedium);
     border-radius: 7px;
     outline: none;
     &:focus {
@@ -45,7 +45,7 @@ export const Field = styled.div`
 export const Input = styled.input`
   flex: 1;
   padding: 1rem;
-  border: 1px solid var(--greyLight);
+  border: 1px solid var(--greyMedium);
   border-radius: 7px;
   outline: none;
   &:focus {

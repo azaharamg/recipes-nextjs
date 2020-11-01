@@ -1,5 +1,5 @@
 .recipes-list {
-  background-color: #f3f3f3;
+  background-color: var(--greyLight);
 }
 .container {
   max-width: 1200px;

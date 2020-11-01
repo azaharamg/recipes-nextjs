@@ -14,10 +14,13 @@ const GlobalTheme = () => {
           --greenDark03: #00a896;
 
           --greyDark: #6c757d;
-          --greyLight: #d9d9d9;
+          --greyMedium: #d9d9d9;
+          --greyLight: #f3f3f3;
 
           --white: #fff;
           --red: #ff0000;
+
+          --orange: #ffa500;
 
           --primaryFontFamily: 'Oxygen', sans-serif;
           --secondaryFontFamily: 'Source Sans Pro', sans-serif;
