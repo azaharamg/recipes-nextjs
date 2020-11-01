@@ -9,7 +9,10 @@ const Nav = styled.nav`
   a {
     font-size: 1.8rem;
     margin-left: 2rem;
-    color: var(--greyDark);
+    color: var(--white);
+    :hover {
+      color: var(--greyDark);
+    }
 
     &:last-of-type {
       margin-right: 0;

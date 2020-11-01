@@ -9,6 +9,37 @@ import NavBar from './NavBar';
 
 import { FirebaseContext } from '../../firebase';
 
+const Wave = styled.div`
+  position: absolute;
+  height: 50px;
+  width: 100%;
+  background: #2c3e50;
+  bottom: 0;
+
+  &:before,
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    border-radius: 100% 50%;
+  }
+
+  &:before {
+    width: 55%;
+    height: 109%;
+    background-color: var(--greyLight);
+    right: -1.5%;
+    top: 60%;
+  }
+  &:after {
+    width: 55%;
+    height: 97%;
+    background-color: #2c3e50;
+    left: -1.5%;
+    top: 40%;
+  }
+`;
+
 const HeaderContainer = styled.div`
   max-width: 1200px;
   width: 95%;
@@ -28,11 +59,14 @@ const Logo = styled.a`
   &:first-letter {
     font-size: 200%;
   }
+  :hover {
+    color: var(--greyMedium);
+  }
 `;
 
 const Avatar = styled.p`
   margin-right: 2rem;
-  color: var(--greyDark);
+  color: var(--white);
   font-family: var(--primaryFontFamily);
   font-weight: 700;
 `;
@@ -43,10 +77,14 @@ const Header = () => {
   return (
     <header
       css={css`
-        background-color: var(--greenLight01);
-        padding: 1rem 0;
+        position: relative;
+        background: #2c3e50;
+        height: 30vh;
+        padding: 2rem 1rem;
       `}
     >
+      <Wave />
+
       <HeaderContainer>
         <div
           css={css`
