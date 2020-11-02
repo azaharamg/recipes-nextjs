@@ -28,11 +28,11 @@ const Wave = styled.div`
     width: 55%;
     height: 109%;
     background-color: var(--greyLight);
-    right: -1.5%;
+    right: 0%;
     top: 60%;
   }
   &:after {
-    width: 55%;
+    width: 54%;
     height: 97%;
     background-color: #2c3e50;
     left: -1.5%;
@@ -79,8 +79,8 @@ const Header = () => {
       css={css`
         position: relative;
         background: #2c3e50;
-        height: 30vh;
-        padding: 2rem 1rem;
+        height: 14rem;
+        padding: 3rem 0 0 0;
       `}
     >
       <Wave />

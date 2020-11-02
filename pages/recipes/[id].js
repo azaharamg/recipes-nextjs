@@ -6,6 +6,9 @@ import styled from '@emotion/styled';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import { enGB } from 'date-fns/locale';
 
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import Error404 from '../../components/layout/404';
 import Layout from '../../components/layout/Layout';
 import Spinner from '../../components/ui/Spinner';
@@ -45,7 +48,6 @@ const Recipe = () => {
   } = router;
 
   const { firebase, user } = useContext(FirebaseContext);
-
   useEffect(() => {
     if (id && getDataDb) {
       const getRecipe = async () => {
@@ -179,7 +181,13 @@ const Recipe = () => {
             <RecipeContainer>
               <div>
                 <img src={urlImage} alt={`${name} image`} />
-                <p>{description}</p>
+                <p
+                  css={css`
+                    text-align: justify;
+                  `}
+                >
+                  {description}
+                </p>
                 <p>
                   Read the original in this{' '}
                   <a href={author} target='_blank'>
@@ -242,7 +250,25 @@ const Recipe = () => {
                     `}
                   >
                     <Button bgColor='true' onClick={handleVote}>
-                      Vote this recipe
+                      {userHasVoted.includes(user.uid) ? (
+                        <FontAwesomeIcon
+                          icon={faStar}
+                          css={css`
+                            color: var(--orange);
+                            margin-right: 1rem;
+                          `}
+                        />
+                      ) : (
+                        <FontAwesomeIcon
+                          icon={faStar}
+                          css={css`
+                            opacity: 0.3;
+                            color: var(--white);
+                            margin-right: 1rem;
+                          `}
+                        />
+                      )}
+                      Like
                     </Button>
                     {userAvailableDelete() && <DangerButton onClick={handleDeleteRecipe}>Remove</DangerButton>}
                   </div>

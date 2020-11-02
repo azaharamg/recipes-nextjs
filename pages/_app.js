@@ -1,4 +1,3 @@
-import App from 'next/app';
 import firebase, { FirebaseContext } from '../firebase';
 import useAuth from '../hooks/useAuth';
 

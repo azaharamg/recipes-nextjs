@@ -11,7 +11,7 @@ export default function validateNewRecipe(values) {
 
   if (!values.description) {
     errors.description = 'Description is required';
-  } else if (values.description.length > 400) {
+  } else if (values.description.length > 700) {
     errors.description = 'Description is too long';
   }
 

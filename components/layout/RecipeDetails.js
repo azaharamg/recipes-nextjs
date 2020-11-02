@@ -13,7 +13,7 @@ const Recipe = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--greyDark);
+  border-bottom: 2rem solid var(--greyLight);
 `;
 
 const DescriptionRecipe = styled.div`
@@ -139,25 +139,6 @@ const RecipeDetails = ({ recipe }) => {
           <p>Published {formatDistanceToNow(new Date(published), { locale: enGB })} ago</p>
         </div>
       </DescriptionRecipe>
-
-      {/* <Votes>
-        {!votes ? (
-          <FontAwesomeIcon
-            icon={faStar}
-            css={css`
-              opacity: 0.2;
-            `}
-          />
-        ) : (
-          <FontAwesomeIcon
-            icon={faStar}
-            css={css`
-              color: var(--orange);
-            `}
-          />
-        )}
-        <p>{votes}</p>
-      </Votes> */}
     </Recipe>
   );
 };

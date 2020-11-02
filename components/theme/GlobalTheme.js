@@ -37,6 +37,7 @@ const GlobalTheme = () => {
         }
 
         body {
+          background-color: var(--greyLight);
           font-size: 1.6rem;
           line-height: 1.5;
           font-family: var(--secondaryFontFamily);
