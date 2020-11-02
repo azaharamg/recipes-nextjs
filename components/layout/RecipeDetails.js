@@ -87,7 +87,7 @@ const Votes = styled.div`
 `;
 
 const RecipeDetails = ({ recipe }) => {
-  const { id, comments, published, description, name, urlImage, author, votes } = recipe;
+  const { id, comments, published, description, name, urlImage, author, userHasVoted } = recipe;
   return (
     <Recipe>
       <DescriptionRecipe>
@@ -105,7 +105,7 @@ const RecipeDetails = ({ recipe }) => {
             <Link href='/recipes/[id]' as={`/recipes/${id}`}>
               <Title>{name}</Title>
             </Link>
-            {!votes ? (
+            {userHasVoted.length === 0 ? (
               <Votes>
                 <FontAwesomeIcon
                   icon={faStar}
@@ -113,7 +113,7 @@ const RecipeDetails = ({ recipe }) => {
                     opacity: 0.2;
                   `}
                 />
-                <p>Votes: {votes}</p>
+                <p>Votes: {userHasVoted.length}</p>
               </Votes>
             ) : (
               <Votes>
@@ -123,7 +123,7 @@ const RecipeDetails = ({ recipe }) => {
                     color: var(--orange);
                   `}
                 />
-                <p>Votes: {votes}</p>
+                <p>Votes: {userHasVoted.length}</p>
               </Votes>
             )}
           </div>

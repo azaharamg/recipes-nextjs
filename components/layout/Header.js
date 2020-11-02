@@ -25,7 +25,7 @@ const Wave = styled.div`
   }
 
   &:before {
-    width: 55%;
+    width: 54%;
     height: 109%;
     background-color: var(--greyLight);
     right: 0%;

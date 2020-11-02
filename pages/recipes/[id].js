@@ -63,9 +63,9 @@ const Recipe = () => {
       };
       getRecipe();
     }
-  }, [id]);
+  }, [id, recipe]);
 
-  const { userInfo, comments, published, description, name, urlImage, author, votes, userHasVoted } = recipe;
+  const { userInfo, comments, published, description, name, urlImage, author, userHasVoted } = recipe;
 
   /**
    * Manage user votes
@@ -75,23 +75,27 @@ const Recipe = () => {
       return router.push('/login');
     }
 
-    const totalVotes = votes + 1;
+    let usersHaveVoted = [...userHasVoted];
 
-    // Check if current user has already voted
-    if (userHasVoted.includes(user.uid)) return;
+    // Check if user have already voted
+    if (userHasVoted.includes(user.uid)) {
+      const indexOfUserId = usersHaveVoted.indexOf(user.uid);
+      if (indexOfUserId > -1) {
+        usersHaveVoted.splice(indexOfUserId, 1);
+      }
+    } else {
+      usersHaveVoted = [...userHasVoted, user.uid];
+    }
 
-    //Store ids of user have already voted
-    const usersHaveVoted = [...userHasVoted, user.uid];
-
-    // Update state
+    // Update local state
     storeRecipe({
       ...recipe,
-      votes: totalVotes,
+      votes: usersHaveVoted.length,
     });
     storeDataDb(true);
 
-    //Update db
-    firebase.db.collection('recipes').doc(id).update({ votes: totalVotes, userHasVoted: usersHaveVoted });
+    // Update database
+    firebase.db.collection('recipes').doc(id).update({ votes: usersHaveVoted.length, userHasVoted: usersHaveVoted });
   };
 
   /**
@@ -272,7 +276,7 @@ const Recipe = () => {
                     </Button>
                     {userAvailableDelete() && <DangerButton onClick={handleDeleteRecipe}>Remove</DangerButton>}
                   </div>
-                  <p>{votes === 1 ? `${votes} Vote` : `${votes} Vote`}</p>
+                  <p>{userHasVoted.length === 1 ? `${userHasVoted.length} Vote` : `${userHasVoted.length} Vote`}</p>
 
                   <h2>Add your comments</h2>
                   <form onSubmit={addComment}>
