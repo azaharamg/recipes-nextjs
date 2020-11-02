@@ -18,7 +18,7 @@ import { Button, DangerButton } from '../../components/ui/Button';
 const RecipeContainer = styled.div`
   @media (min-width: 768px) {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr 1fr;
     column-gap: 2rem;
   }
 `;
@@ -185,26 +185,6 @@ const Recipe = () => {
             <RecipeContainer>
               <div>
                 <img src={urlImage} alt={`${name} image`} />
-                <p
-                  css={css`
-                    text-align: justify;
-                  `}
-                >
-                  {description}
-                </p>
-                <p>
-                  Read the original in this{' '}
-                  <a href={author} target='_blank'>
-                    link
-                  </a>
-                </p>
-                {published ? (
-                  <p>
-                    Published {formatDistanceToNow(new Date(published), { locale: enGB })} ago
-                    {user ? ` por ${user.displayName}` : null}
-                  </p>
-                ) : null}
-
                 <h2
                   id='comments'
                   css={css`
@@ -243,17 +223,28 @@ const Recipe = () => {
                 ) : (
                   <p>There aren't any comments.</p>
                 )}
+                {user && (
+                  <aside>
+                    <h2>Add your comments</h2>
+                    <form onSubmit={addComment}>
+                      <Field>
+                        <textarea type='text' name='message' onChange={handleCommentChange} />
+                      </Field>
+                      <InputSubmit type='submit' value='Add' />
+                    </form>
+                  </aside>
+                )}
               </div>
-              {user && (
-                <aside>
+              <aside>
+                {user && (
                   <div
                     css={css`
                       display: flex;
-                      justify-content: space-between;
+                      justify-content: flex-end;
                       align-items: center;
                     `}
                   >
-                    <Button bgColor='true' onClick={handleVote}>
+                    <Button bgColor='true' onClick={handleVote} title='Number of votes'>
                       {userHasVoted.includes(user.uid) ? (
                         <FontAwesomeIcon
                           icon={faStar}
@@ -272,21 +263,36 @@ const Recipe = () => {
                           `}
                         />
                       )}
-                      Like
+                      {userHasVoted.length}
                     </Button>
-                    {userAvailableDelete() && <DangerButton onClick={handleDeleteRecipe}>Remove</DangerButton>}
+                    {userAvailableDelete() && (
+                      <DangerButton bgColor='true' onClick={handleDeleteRecipe} title='Remove Recipe'>
+                        Remove
+                      </DangerButton>
+                    )}
                   </div>
-                  <p>{userHasVoted.length === 1 ? `${userHasVoted.length} Vote` : `${userHasVoted.length} Vote`}</p>
-
-                  <h2>Add your comments</h2>
-                  <form onSubmit={addComment}>
-                    <Field>
-                      <Input type='text' name='message' onChange={handleCommentChange} />
-                    </Field>
-                    <InputSubmit type='submit' value='Add' />
-                  </form>
-                </aside>
-              )}
+                  // <p>{userHasVoted.length === 1 ? `${userHasVoted.length} Vote` : `${userHasVoted.length} Vote`}</p>
+                )}
+                <p
+                  css={css`
+                    text-align: justify;
+                  `}
+                >
+                  {description}
+                </p>
+                <p>
+                  Read the original in this{' '}
+                  <a href={author} target='_blank'>
+                    link
+                  </a>
+                </p>
+                {published ? (
+                  <p>
+                    Published {formatDistanceToNow(new Date(published), { locale: enGB })} ago
+                    {user ? ` por ${user.displayName}` : null}
+                  </p>
+                ) : null}
+              </aside>
             </RecipeContainer>
           </div>
         )}

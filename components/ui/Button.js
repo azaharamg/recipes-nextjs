@@ -26,7 +26,7 @@ export const DangerButton = styled.a`
   padding: 0.8rem 2rem;
   margin-right: 1rem;
   border-radius: 0.5rem;
-  background-color: ${(props) => (props.bgColor ? '#00a896' : 'white')};
+  background-color: ${(props) => (props.bgColor ? 'red' : 'white')};
   color: ${(props) => (props.bgColor ? 'white' : '#000')};
 
   &:last-of-type {
