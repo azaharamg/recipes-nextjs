@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { FirebaseContext } from '../../firebase';
+
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import { enGB } from 'date-fns/locale';
 import Link from 'next/link';
 
-import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import VoteButton from '../../components/ui/VoteButton';
+import VotesInformation from '../../components/ui/VoteSpan';
 
 const Recipe = styled.li`
   padding: 4rem;
@@ -73,21 +75,10 @@ const Image = styled.img`
   width: 20rem;
 `;
 
-const Votes = styled.div`
-  display: flex;
-  align-items: center;
-
-  p {
-    font-size: 1.6rem;
-    font-weight: 300;
-    &:last-of-type {
-      margin: 0 0 0 1rem;
-    }
-  }
-`;
-
 const RecipeDetails = ({ recipe }) => {
-  const { id, comments, published, description, name, urlImage, author, userHasVoted } = recipe;
+  const { user } = useContext(FirebaseContext);
+  const { id, comments, published, description, name, urlImage, userHasVoted } = recipe;
+
   return (
     <Recipe>
       <DescriptionRecipe>
@@ -105,26 +96,10 @@ const RecipeDetails = ({ recipe }) => {
             <Link href='/recipes/[id]' as={`/recipes/${id}`}>
               <Title>{name}</Title>
             </Link>
-            {userHasVoted.length === 0 ? (
-              <Votes>
-                <FontAwesomeIcon
-                  icon={faStar}
-                  css={css`
-                    opacity: 0.2;
-                  `}
-                />
-                <p>Votes: {userHasVoted.length}</p>
-              </Votes>
+            {!user ? (
+              <VotesInformation userHasVoted={userHasVoted} />
             ) : (
-              <Votes>
-                <FontAwesomeIcon
-                  icon={faStar}
-                  css={css`
-                    color: var(--orange);
-                  `}
-                />
-                <p>Votes: {userHasVoted.length}</p>
-              </Votes>
+              <VoteButton user={user} recipe={recipe} onVoteSubmited={() => {}} />
             )}
           </div>
           <DescriptionText>{description}</DescriptionText>
