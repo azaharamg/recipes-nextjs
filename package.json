@@ -16,6 +16,7 @@
     "@fortawesome/free-brands-svg-icons": "^5.15.1",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.12",
+    "@netlify/plugin-nextjs": "^0.1.1",
     "babel-plugin-emotion": "^10.0.33",
     "date-fns": "^2.16.1",
     "firebase": "^7.23.0",
