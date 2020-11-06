@@ -251,7 +251,7 @@ const Recipe = () => {
                 {published ? (
                   <p>
                     Published {formatDistanceToNow(new Date(published), { locale: enGB })} ago
-                    {user ? ` por ${user.displayName}` : null}
+                    {user ? ` by ${userInfo.name}` : null}
                   </p>
                 ) : null}
               </aside>
