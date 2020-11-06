@@ -6,14 +6,13 @@ import styled from '@emotion/styled';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import { enGB } from 'date-fns/locale';
 
-import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import Error404 from '../../components/layout/404';
 import Layout from '../../components/layout/Layout';
 import Spinner from '../../components/ui/Spinner';
-import { Field, Input, InputSubmit } from '../../components/ui/Form';
-import { Button, DangerButton } from '../../components/ui/Button';
+import { Field, InputSubmit } from '../../components/ui/Form';
+import { DangerButton } from '../../components/ui/Button';
+import VoteButton from '../../components/ui/VoteButton';
+import VotesInformation from '../../components/ui/VoteSpan';
 
 const RecipeContainer = styled.div`
   @media (min-width: 768px) {
@@ -54,7 +53,7 @@ const Recipe = () => {
         const recipeQuery = await firebase.db.collection('recipes').doc(id);
         const recipe = await recipeQuery.get();
         if (recipe.exists) {
-          storeRecipe(recipe.data());
+          storeRecipe({ ...recipe.data(), id });
           storeDataDb(false);
         } else {
           storeError(true);
@@ -70,32 +69,12 @@ const Recipe = () => {
   /**
    * Manage user votes
    */
-  const handleVote = () => {
-    if (!user) {
-      return router.push('/login');
-    }
-
-    let usersHaveVoted = [...userHasVoted];
-
-    // Check if user have already voted
-    if (userHasVoted.includes(user.uid)) {
-      const indexOfUserId = usersHaveVoted.indexOf(user.uid);
-      if (indexOfUserId > -1) {
-        usersHaveVoted.splice(indexOfUserId, 1);
-      }
-    } else {
-      usersHaveVoted = [...userHasVoted, user.uid];
-    }
-
-    // Update local state
+  const handleVote = (userHasVoted) => {
     storeRecipe({
       ...recipe,
-      votes: usersHaveVoted.length,
+      userHasVoted,
+      votes: userHasVoted.length,
     });
-    storeDataDb(true);
-
-    // Update database
-    firebase.db.collection('recipes').doc(id).update({ votes: usersHaveVoted.length, userHasVoted: usersHaveVoted });
   };
 
   /**
@@ -236,43 +215,26 @@ const Recipe = () => {
                 )}
               </div>
               <aside>
-                {user && (
-                  <div
-                    css={css`
-                      display: flex;
-                      justify-content: flex-end;
-                      align-items: center;
-                    `}
-                  >
-                    <Button bgColor='true' onClick={handleVote} title='Number of votes'>
-                      {userHasVoted.includes(user.uid) ? (
-                        <FontAwesomeIcon
-                          icon={faStar}
-                          css={css`
-                            color: var(--orange);
-                            margin-right: 1rem;
-                          `}
-                        />
-                      ) : (
-                        <FontAwesomeIcon
-                          icon={faStar}
-                          css={css`
-                            opacity: 0.3;
-                            color: var(--white);
-                            margin-right: 1rem;
-                          `}
-                        />
+                <div
+                  css={css`
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: center;
+                  `}
+                >
+                  {user ? (
+                    <React.Fragment>
+                      <VoteButton user={user} recipe={recipe} onVoteSubmited={handleVote} />
+                      {userAvailableDelete() && (
+                        <DangerButton bgColor='true' onClick={handleDeleteRecipe} title='Remove Recipe'>
+                          Remove
+                        </DangerButton>
                       )}
-                      {userHasVoted.length}
-                    </Button>
-                    {userAvailableDelete() && (
-                      <DangerButton bgColor='true' onClick={handleDeleteRecipe} title='Remove Recipe'>
-                        Remove
-                      </DangerButton>
-                    )}
-                  </div>
-                  // <p>{userHasVoted.length === 1 ? `${userHasVoted.length} Vote` : `${userHasVoted.length} Vote`}</p>
-                )}
+                    </React.Fragment>
+                  ) : (
+                    <VotesInformation userHasVoted={userHasVoted} />
+                  )}
+                </div>
                 <p
                   css={css`
                     text-align: justify;

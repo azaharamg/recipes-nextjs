@@ -15,7 +15,7 @@ export const Button = styled.a`
 
   &:hover {
     cursor: pointer;
-    box-shadow: 0 1.2rem 1.6rem 0 rgba(0, 0, 0, 0.24), 0 1.7rem 5rem 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 0.2rem 1.6rem 0 rgba(0, 0, 0, 0.24);
   }
 `;
 
