@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { FirebaseContext } from '../../firebase';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
@@ -10,7 +11,7 @@ import Error404 from '../../components/layout/404';
 import Layout from '../../components/layout/Layout';
 import Spinner from '../../components/ui/Spinner';
 import { Field, InputSubmit } from '../../components/ui/Form';
-import { DangerButton } from '../../components/ui/Button';
+import { DangerButton, Button } from '../../components/ui/Button';
 import VoteButton from '../../components/ui/VoteButton';
 import VotesInformation from '../../components/ui/VoteSpan';
 
@@ -30,6 +31,13 @@ const OwnerRecipe = styled.p`
   font-weight: 700;
   display: inline-block;
   text-align: center;
+`;
+
+const ActionsButtons = styled.div`
+  margin-top: 4rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 `;
 
 const Recipe = () => {
@@ -120,7 +128,7 @@ const Recipe = () => {
   /**
    * Only the creator of a recipe can delete it
    */
-  const userAvailableDelete = () => {
+  const userAvailableDeleteOrEdit = () => {
     if (!user) return false;
 
     if (userInfo.id === user.uid) {
@@ -223,14 +231,7 @@ const Recipe = () => {
                   `}
                 >
                   {user ? (
-                    <React.Fragment>
-                      <VoteButton user={user} recipe={recipe} onVoteSubmited={handleVote} />
-                      {userAvailableDelete() && (
-                        <DangerButton bgColor='true' onClick={handleDeleteRecipe} title='Remove Recipe'>
-                          Remove
-                        </DangerButton>
-                      )}
-                    </React.Fragment>
+                    <VoteButton user={user} recipe={recipe} onVoteSubmited={handleVote} />
                   ) : (
                     <VotesInformation userHasVoted={userHasVoted} />
                   )}
@@ -254,6 +255,16 @@ const Recipe = () => {
                     {user ? ` by ${userInfo.name}` : null}
                   </p>
                 ) : null}
+                {userAvailableDeleteOrEdit() && (
+                  <ActionsButtons>
+                    <Button bgColor='true' onClick={() => router.push(`/edit-recipes/${id}`)} title='Edit Recipe'>
+                      Edit
+                    </Button>
+                    <DangerButton bgColor='true' onClick={handleDeleteRecipe} title='Remove Recipe'>
+                      Remove
+                    </DangerButton>
+                  </ActionsButtons>
+                )}
               </aside>
             </RecipeContainer>
           </div>
