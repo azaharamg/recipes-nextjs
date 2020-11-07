@@ -11,7 +11,7 @@ import { Form, Field, InputSubmit, Input, Error } from '../components/ui/Form';
 import Error404 from '../components/layout/404';
 
 import useValidation from '../hooks/useValidation';
-import validateNewRecipe from '../validation/validateNewRecipe';
+import validateRecipe from '../validation/validateRecipe';
 
 import { STATE_INITIAL_RECIPE } from '../constants/constants';
 
@@ -26,7 +26,7 @@ const NewRecipe = () => {
 
   const { values, errors, handleSubmit, handleChange, handleBlur } = useValidation(
     STATE_INITIAL_RECIPE,
-    validateNewRecipe,
+    validateRecipe,
     createRecipe
   );
   const { name, author, image, description } = values;
