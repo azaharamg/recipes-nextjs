@@ -16,6 +16,10 @@ const useValidation = (initialState, validation, actionFn) => {
     }
   }, [errors]);
 
+  const updateValues = (newValues) => {
+    storeValues(newValues);
+  };
+
   const handleChange = (e) => {
     storeValues({
       ...values,
@@ -38,6 +42,7 @@ const useValidation = (initialState, validation, actionFn) => {
   return {
     values,
     errors,
+    updateValues,
     handleSubmit,
     handleChange,
     handleBlur,

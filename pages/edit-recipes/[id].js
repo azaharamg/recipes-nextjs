@@ -9,9 +9,11 @@ import Layout from '../../components/layout/Layout';
 import { Form, Field, InputSubmit, Input, Error } from '../../components/ui/Form';
 import Error404 from '../../components/layout/404';
 
+import useValidation from '../../hooks/useValidation';
+import validateRecipe from '../../validation/validateRecipe';
+
 const EditRecipe = () => {
   const { firebase, user } = useContext(FirebaseContext);
-  const [recipe, storeRecipe] = useState({});
   const [getDataDb, storeDataDb] = useState(true);
 
   /**
@@ -22,13 +24,28 @@ const EditRecipe = () => {
     query: { id },
   } = router;
 
+  const updateRecipe = async () => {
+    try {
+      await firebase.db.collection('recipes').doc(id).update(values);
+      router.push(`/recipes/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const { values, errors, updateValues, handleChange, handleSubmit, handleBlur } = useValidation(
+    {},
+    validateRecipe,
+    updateRecipe
+  );
+
   useEffect(() => {
     if (id && getDataDb) {
       const getRecipe = async () => {
         const recipeQuery = await firebase.db.collection('recipes').doc(id);
         const recipe = await recipeQuery.get();
         if (recipe.exists) {
-          storeRecipe({ ...recipe.data(), id });
+          updateValues({ ...recipe.data(), id });
           storeDataDb(false);
         } else {
           storeError(true);
@@ -38,25 +55,6 @@ const EditRecipe = () => {
       getRecipe();
     }
   }, [id]);
-
-  const handleChange = (e) => {
-    storeRecipe({
-      ...recipe,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await firebase.db.collection('recipes').doc(id).update(recipe);
-      router.push(`/recipes/${id}`);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleBlur = () => {};
 
   return (
     <div>
@@ -71,7 +69,7 @@ const EditRecipe = () => {
                 margin-top: 5rem;
               `}
             >
-              {`Edit ${recipe.name}`}
+              {`Edit ${values.name}`}
             </h1>
             <Form onSubmit={handleSubmit} noValidate>
               <fieldset>
@@ -83,11 +81,11 @@ const EditRecipe = () => {
                     id='name'
                     placeholder="Recipe's Name"
                     name='name'
-                    value={recipe.name}
+                    value={values.name}
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-                  {/* {errors.name && <Error>{errors.name}*</Error>} */}
+                  {errors.name && <Error>{errors.name}*</Error>}
                 </Field>
                 <Field>
                   <label htmlFor='author'>Author</label>
@@ -96,11 +94,11 @@ const EditRecipe = () => {
                     id='author'
                     placeholder="What's your name?"
                     name='author'
-                    value={recipe.author}
+                    value={values.author}
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-                  {/* {errors.author && <Error>{errors.author}*</Error>} */}
+                  {errors.author && <Error>{errors.author}*</Error>}
                 </Field>
                 <Field>
                   <label htmlFor='image'>Image</label>
@@ -108,7 +106,6 @@ const EditRecipe = () => {
                     accept='image/png, image/jpeg'
                     id='image'
                     name='image'
-                    randomizeFilename
                     storageRef={firebase.storage.ref('recipes')}
                   />
                 </Field>
@@ -130,24 +127,13 @@ const EditRecipe = () => {
                   <textarea
                     id='description'
                     name='description'
-                    value={recipe.description}
+                    value={values.description}
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-                  {/* {errors.description && <Error>{errors.description}*</Error>} */}
+                  {errors.description && <Error>{errors.description}*</Error>}
                 </Field>
               </fieldset>
-
-              {/* {createRecipeError && (
-                <Error
-                  css={css`
-                    text-align: center;
-                  `}
-                >
-                  {`Sorry, ${createRecipeError}`}
-                </Error>
-              )} */}
-
               <InputSubmit type='submit' value='Edit' />
             </Form>
           </React.Fragment>
