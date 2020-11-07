@@ -29,7 +29,7 @@ const NewRecipe = () => {
     validateRecipe,
     createRecipe
   );
-  const { name, author, image, description } = values;
+  const { name, author, description } = values;
 
   const router = useRouter();
   const { user, firebase } = useContext(FirebaseContext);
@@ -41,7 +41,7 @@ const NewRecipe = () => {
     const recipe = {
       name,
       author,
-      image,
+      image: nameImage,
       description,
       votes: 0,
       urlImage,
@@ -134,7 +134,6 @@ const NewRecipe = () => {
                     accept='image/png, image/jpeg'
                     id='image'
                     name='image'
-                    randomizeFilename
                     storageRef={firebase.storage.ref('recipes')}
                     onUploadStart={handleUploadStart}
                     onUploadError={handleUploadError}
