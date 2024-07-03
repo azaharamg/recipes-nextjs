@@ -9,8 +9,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "wednesday"
-      time: "7:00"
+      day: "thursday"
+      time: "07:00"
     groups:
       prod-dependencies:
         dependency-type: "production"
