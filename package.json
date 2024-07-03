@@ -17,7 +17,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@netlify/plugin-nextjs": "^0.1.1",
     "babel-plugin-emotion": "^10.0.33",
-    "date-fns": "^2.16.1",
+    "date-fns": "^3.6.0",
     "firebase": "^7.23.0",
     "firebase-admin": "^9.2.0",
     "next": "9.5.4",
