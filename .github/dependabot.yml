@@ -18,4 +18,4 @@ updates:
           - "minor"
           - "patch"
     labels:
-      - "update dependencies"
+      - "dependencies"
